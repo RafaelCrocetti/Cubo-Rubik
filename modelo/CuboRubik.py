@@ -1,3 +1,4 @@
+import math
 from modelo.Posicion import Posicion
 from modelo.Orientacion import Orientacion
 from modelo.SubCubo import SubCubo
@@ -82,14 +83,14 @@ class CuboRubik:
 
 
 
-                    if len(carasSubCubo==3):
+                    if len(carasSubCubo)==3:
                         coloresSubCubo = [colores[carasSubCubo[0] - 1], colores[carasSubCubo[1] - 1],
                                       colores[carasSubCubo[2] - 1]]
                         tipo="Esquina"
-                    elif len(carasSubCubo==2):
+                    elif len(carasSubCubo)==2:
                         coloresSubCubo = [colores[carasSubCubo[0] - 1], colores[carasSubCubo[1] - 1]]
                         tipo="Arista"
-                    elif len(carasSubCubo==1):
+                    elif len(carasSubCubo)==1:
                         tipo="Centro"
                         coloresSubCubo = [colores[carasSubCubo[0] - 1]]
 
@@ -97,9 +98,91 @@ class CuboRubik:
                     posicionObjetivo=Posicion(i,j,k)
 
 
-                    orientacionActual = Orientacion(carasSubCubo, coloresSubCubo)
-                    orientacionObjetivo = Orientacion(carasSubCubo, coloresSubCubo)
+                    orientacionActual = Orientacion(coloresSubCubo,carasSubCubo)
+                    orientacionObjetivo = Orientacion(coloresSubCubo,carasSubCubo)
                     subCubo = SubCubo(id, posicionActual, posicionObjetivo, orientacionActual, orientacionObjetivo,
                                       tipo)
                     self.SubCubos.append(subCubo)
+
+    def print(self):
+
+        for k in range(3):
+            renglon = "       "
+            for i in range(3):
+                id=self.convertirCoordenadasEnId([i,2,k])
+                subCubo=self.SubCubos[id-1]
+                color=subCubo.orientacionActual.obtenerColorEnCara(1)
+                orientacion=Orientacion
+                numero=orientacion.obtenerNumeroColor(orientacion,color)
+                renglon=renglon+" "+str(numero)
+
+            print(renglon)
+        renglon=""
+        for j in range(2,-1,-1):
+            renglon = ""
+            for k in range(3):
+                id = self.convertirCoordenadasEnId([0, j, k])
+                subCubo = self.SubCubos[id - 1]
+                color = subCubo.orientacionActual.obtenerColorEnCara(2)
+                orientacion = Orientacion
+                numero = orientacion.obtenerNumeroColor(orientacion, color)
+                renglon = renglon + " "+str(numero)
+
+            agregar=" "
+            for i in range(3):
+                id = self.convertirCoordenadasEnId([0, j, k])
+                subCubo = self.SubCubos[id - 1]
+                color = subCubo.orientacionActual.obtenerColorEnCara(3)
+                orientacion = Orientacion
+                numero = orientacion.obtenerNumeroColor(orientacion, color)
+                agregar = agregar + " " + str(numero)
+
+            renglon=renglon+agregar
+            agregar = " "
+            for k in range(2,-1,-1):
+                id = self.convertirCoordenadasEnId([2, j, k])
+                subCubo = self.SubCubos[id - 1]
+                color = subCubo.orientacionActual.obtenerColorEnCara(4)
+                orientacion = Orientacion
+                numero = orientacion.obtenerNumeroColor(orientacion, color)
+                agregar = agregar + " "+str(numero)
+
+            renglon = renglon + agregar
+            agregar = " "
+            for i in range(2, -1, -1):
+                id = self.convertirCoordenadasEnId([i, j, 0])
+                subCubo = self.SubCubos[id - 1]
+                color = subCubo.orientacionActual.obtenerColorEnCara(5)
+                orientacion = Orientacion
+                numero = orientacion.obtenerNumeroColor(orientacion, color)
+                agregar = agregar + " " + str(numero)
+            print(renglon+agregar)
+
+        for k in range(2,-1,-1):
+            renglon = "       "
+            for i in range(3):
+                id = self.convertirCoordenadasEnId([i, 0, k])
+                subCubo = self.SubCubos[id - 1]
+                color = subCubo.orientacionActual.obtenerColorEnCara(6)
+                orientacion = Orientacion
+                numero = orientacion.obtenerNumeroColor(orientacion, color)
+                renglon = renglon + " " + str(numero)
+            print(renglon)
+
+
+
+    def convertirCoordenadasEnId(self,coordenadas):
+        return coordenadas[0]+3*coordenadas[1]+9*coordenadas[2]+1
+
+    def convertirIdEnCoordenadas(self,id):
+        cociente=math.floor((id-1)/3)
+        x=(id-1)%3
+        y=cociente%3
+        z=math.floor(cociente/3)%3
+        coordenadas=[x,y,z]
+        return  coordenadas
+
+
+
+
 
