@@ -1,6 +1,7 @@
 import math
 from modelo.SubCubo import SubCubo
 class CuboRubik:
+    # PENDIENTE: documentar que puta es lo que hice aca
     def __init__(self):
         self.SubCubos=[]
 
@@ -189,8 +190,101 @@ class CuboRubik:
         coordenadas=[x,y,z]
         return  coordenadas
 
+    def convertirPosicionLinealEnCoordenadasPlanosFrontal(self, lineal):
+
+        if lineal == 0:
+            planos = [4, 1, 5]
+        elif lineal == 1:
+            planos = [4, 5]
+        elif lineal == 2:
+            planos = [3, 4, 5]
+        elif lineal == 6:
+            planos = [1, 4, 0]
+        elif lineal == 7:
+            planos = [4, 0]
+        elif lineal == 8:
+            planos = [4, 3, 0]
+        elif lineal == 9:
+            planos = [1, 5]
+        elif lineal == 10:
+            planos = [5]
+        elif lineal == 11:
+            planos = [3, 5]
+
+        elif lineal == 15:
+            planos = [1, 0]
+        elif lineal == 16:
+            planos = [0]
+        elif lineal == 17:
+            planos = [3, 0]
+        elif lineal == 18:
+            planos = [1, 2, 5]
+        elif lineal == 19:
+            planos = [2, 5]
+        elif lineal == 20:
+            planos = [2, 3, 5]
+
+        elif lineal == 24:
+            planos = [2, 1, 0]
+        elif lineal == 25:
+            planos = [2, 0]
+        elif lineal == 26:
+            planos = [3, 2, 0]
+        return planos
+
+    def convertirPosicionLinealEnCoordenadasPlanosIzquierda(self, lineal):
+
+        if lineal == 0:
+            planos = [5,4,1]
+
+        elif lineal == 2:
+            planos = [ 4, 5, 3]
+        elif lineal == 3:
+            planos = [4, 1]
+
+        elif lineal == 5:
+            planos = [4, 3]
+        elif lineal == 6:
+            planos = [ 4, 0,1]
+
+        elif lineal == 8:
+            planos = [0, 4, 3]
+        elif lineal == 9:
+            planos = [5,1]
+
+        elif lineal == 11:
+            planos = [5, 3]
+        elif lineal == 12:
+            planos = [1]
+
+        elif lineal == 14:
+            planos = [3]
+        elif lineal == 15:
+            planos = [0, 1]
+
+        elif lineal == 17:
+            planos = [0, 3]
+        elif lineal == 18:
+            planos = [ 2, 5,1]
+
+        elif lineal == 20:
+            planos = [ 5, 2, 3]
+        elif lineal == 21:
+            planos = [2, 1]
+
+        elif lineal == 23:
+            planos = [2, 3]
+        elif lineal == 24:
+            planos = [0, 2, 1]
+
+        elif lineal == 26:
+            planos = [ 2, 0,3]
+        return planos
     # convierte la posicion de un subCubo en la lista a la posicion de los N planos que le corresponden
     # a esa posicion
+    #PENDIENTE: revisar el orden de los planos, debe ser universal
+    # esto funciono perfecto para las frontales y posteriores
+    # PENDIENTE: averiguar por que?
     def convertirPosicionLinealEnCoordenadasPlanos(self,lineal):
         
         if lineal == 0:
@@ -272,8 +366,19 @@ class CuboRubik:
 
     def rotarCaraIzquierdaHorario(self):
         self.rotarValoresIzquierdaReloj([18, 24, 6, 0])
-
         self.rotarValoresIzquierdaReloj([21, 15, 3, 9])
+
+    def rotarCaraIzquierdaAntiHorario(self):
+        self.rotarValoresIzquierdaReloj([18, 0, 6, 24])
+        self.rotarValoresIzquierdaReloj([21, 9, 3, 15])
+
+    def rotarCaraDerechaHorario(self):
+        self.rotarValoresIzquierdaReloj([26,20,2,8])
+        self.rotarValoresIzquierdaReloj([23,11,5,17])
+
+    def rotarCaraDerechaAntiHorario(self):
+        self.rotarValoresIzquierdaReloj([26,8,2,20])
+        self.rotarValoresIzquierdaReloj([23,17,5,11])
 
     def rotarValoresFrontalesReloj(self,valoresRotar):
         cantidadValores=len(valoresRotar)
@@ -287,8 +392,8 @@ class CuboRubik:
             posicionActual=self.convertirPosicionLinealEnCoordenadas(valorActual)
             self.SubCubos[valorActual].posicionActual=posicionActual
 
-            planosSiguiente= self.convertirPosicionLinealEnCoordenadasPlanos(siguienteValor)
-            planosActual= self.convertirPosicionLinealEnCoordenadasPlanos(valorActual)
+            planosSiguiente= self.convertirPosicionLinealEnCoordenadasPlanosFrontal(siguienteValor)
+            planosActual= self.convertirPosicionLinealEnCoordenadasPlanosFrontal(valorActual)
             self.SubCubos[valorActual].orientacionColoresActual=[0,0,0,0,0,0]
             for j in range(len(planosSiguiente)):
                 planoParaActual=planosActual[j]
@@ -300,8 +405,8 @@ class CuboRubik:
         siguienteValor=valoresRotar[0]
         self.SubCubos[valorActual].copiarSubCubo(subCuboAuxiliar)
         self.SubCubos[valorActual].posicionActual=self.convertirPosicionLinealEnCoordenadas(valorActual)
-        planosSiguiente = self.convertirPosicionLinealEnCoordenadasPlanos(siguienteValor)
-        planosActual = self.convertirPosicionLinealEnCoordenadasPlanos(valorActual)
+        planosSiguiente = self.convertirPosicionLinealEnCoordenadasPlanosFrontal(siguienteValor)
+        planosActual = self.convertirPosicionLinealEnCoordenadasPlanosFrontal(valorActual)
         self.SubCubos[valorActual].orientacionColoresActual=[0,0,0,0,0,0]
         for j in range(len(planosSiguiente)):
                 planoParaActual=planosActual[j]
@@ -321,8 +426,8 @@ class CuboRubik:
             posicionActual=self.convertirPosicionLinealEnCoordenadas(valorActual)
             self.SubCubos[valorActual].posicionActual=posicionActual
 
-            planosSiguiente= self.convertirPosicionLinealEnCoordenadasPlanos(siguienteValor)
-            planosActual= self.convertirPosicionLinealEnCoordenadasPlanos(valorActual)
+            planosSiguiente= self.convertirPosicionLinealEnCoordenadasPlanosIzquierda(siguienteValor)
+            planosActual= self.convertirPosicionLinealEnCoordenadasPlanosIzquierda(valorActual)
             self.SubCubos[valorActual].orientacionColoresActual=[0,0,0,0,0,0]
             for j in range(len(planosSiguiente)):
                 planoParaActual=planosActual[j]
@@ -338,8 +443,8 @@ class CuboRubik:
         siguienteValor=valoresRotar[0]
         self.SubCubos[valorActual].copiarSubCubo(subCuboAuxiliar)
         self.SubCubos[valorActual].posicionActual=self.convertirPosicionLinealEnCoordenadas(valorActual)
-        planosSiguiente = self.convertirPosicionLinealEnCoordenadasPlanos(siguienteValor)
-        planosActual = self.convertirPosicionLinealEnCoordenadasPlanos(valorActual)
+        planosSiguiente = self.convertirPosicionLinealEnCoordenadasPlanosIzquierda(siguienteValor)
+        planosActual = self.convertirPosicionLinealEnCoordenadasPlanosIzquierda(valorActual)
         self.SubCubos[valorActual].orientacionColoresActual=[0,0,0,0,0,0]
         for j in range(len(planosSiguiente)):
                 planoParaActual=planosActual[j]
