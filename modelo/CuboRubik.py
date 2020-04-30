@@ -1,28 +1,19 @@
 import math
 from modelo.SubCubo import SubCubo
-# clase encargada de representar el cubo como un conjunto de subcubos
+#  representa el cubo como un conjunto de subcubos
 # que se mueven dentro de una lista y que seon capaces de cambiar su orientacion
+# y posicion
 class CuboRubik:
 
     def __init__(self):
         self.SubCubos=[]
 
-        # se adapta la codificacion para las caras:
-        # 0: posterior
-        # 1: izquierda
-        # 2: superior
-        # 3: derecha
-        # 4: inferior
-        # 5: frontal
-        # 6: ninguna
+
         # las caras estan enumeradas como un cubo desarrollado en un plano
-        # y sus correspondiente colores abajo se calculan 
-        # como igual al numero de cara y dara el indice correcto en este vector
-        # para la posicionObjetivo
-        # la idea es llenar la lista de subcubos con filas que lenen un
-        # plano con tres filas y el cubo con tres planos
-        # colores=["Verde","Amarillo","Rojo","Blanco","Naranja","Azul","Sin Color"]
-        # coloresEnNumeros=[1,2,3,4,5,6,7]
+        # se comienzan a contar los sub cubos desde la posicion (0,0,0) asignandole el valor 0
+        # hasta la posicion (2,2,2) asociandole el valor 26, las filas se llenan primero en x
+        # luego en y y finalmente se incrementa z todos van del 0 al 2
+
         id=0
         for k in range(3):
             for j in range(3):
@@ -117,10 +108,22 @@ class CuboRubik:
                     self.SubCubos.append(subCubo)
                     id=id+1
 
-    # muestra  en plantalla el cubo desarrollado de acuerdo al orden de los plalnos anteriormente mencionado
-    # en vez de colores muestra numeros
-    # colores=["Verde","Amarillo","Rojo","Blanco","Naranja","Azul","Sin Color"]
-    # coloresEnNumeros=[1,2,3,4,5,6,7]
+    # muestra  en plantalla el cubo desarrollado de acuerdo al siguiente orden # 0: posterior
+    #         # 1: izquierda
+    #         # 2: superior
+    #         # 3: derecha
+    #         # 4: inferior
+    #         # 5: frontal
+    #         # 6: ninguna
+    # cada color es representado por un numero siguiendo la siguiente nomclatura
+    # Sin Color= 0
+    # Verde=1
+    # Amarillo=2
+    # Rojo=3
+    # Blanco=4
+    # Naranja=5
+    # Azol= 6
+
     def print(self):
 
         #cara 0
@@ -183,12 +186,21 @@ class CuboRubik:
             print(renglon)
 
 
-    # convierte las coordenadas de un SyubCubo en la posicion en la lista de subCubos que le corresponde
+    # convierte las coordenadas de un SybCubo en la posicion en la lista de subCubos que le corresponde
     def convertirCoordenadasEnPosicionLineal(self,coordenadas):
+        # por la forma que se eligieron las posiciones de los
+        # subcubos en la lista de subcubos cada trio de coordenadas
+        # en el espacio da como resultado un numero en ternario que
+        # representa la posicion en la lista , al pasar ese numero a
+        # decimal se tiene la posicion exacta en la lista que le
+        # corresponde a ese subcubo dada su posicion actual en el espacio
         return coordenadas[0]+3*coordenadas[1]+9*coordenadas[2]
 
     # convierte la posicion de un subCubo en la lista a la posicion en el espacio que le corresponde
     def convertirPosicionLinealEnCoordenadas(self,lineal):
+        # descomponiendo en ternario la posicion actual en la lista de subCubos
+        # se pueden calcular las tres coordenadas espaciales asociadas a la posicion
+        # actual del subCubo
         cociente=math.floor((lineal)/3)
         x=(lineal)%3
         y=cociente%3
@@ -196,18 +208,29 @@ class CuboRubik:
         coordenadas=[x,y,z]
         return  coordenadas
 
-    # convierte la posicion de un subCubo en la lista a la posicion de los N planos que le corresponden
-    # a esa posicion siempre que las caras sean la frontal y la trasera
-    # porque se plantea en frente a la cara a rotar y ahi se hace la nomenclatura de plano con las siguientes
+    # convierte la posicion de un subCubo en la lista de subcubos a una lista de planos ocupados por los stikers del subcubo
+    # para subcubos ubicados en las caras  frontal y trasera
+    # se posiciona la vista en frente a la cara a rotar y ahi se hace la nomenclatura de plano con las siguientes
     # reglas:
-    # 1-Siempre se va en sentido horario
+    # 1- siempre se va en sentido horario
     # 2- siempre se termina en la cara a rotar
-    # 3- se enumera desde el 0 los planos
+    # de la misma forma que el cubo los planos en un subCubo se encuentran enumerados
+    # segun la siguiente nomenclatura
+    # 0: posterior
+    # 1: izquierda
+    # 2: superior
+    # 3: derecha
+    # 4: inferior
+    # 5: frontal
+    # 6: ninguna
     def convertirPosicionLinealEnCoordenadasPlanosFrontal(self, lineal):
 
         if lineal == 0:
+            # tiene tres planos con stikers porque es una esquina
+            # el ultimo plano nombrado es el de la cara a rotar es decir 5
             planos = [4, 1, 5]
         elif lineal == 1:
+            # tiene dos planos con stikers porque es una arista
             planos = [4, 5]
         elif lineal == 2:
             planos = [3, 4, 5]
@@ -244,8 +267,7 @@ class CuboRubik:
         elif lineal == 26:
             planos = [3, 2, 0]
         return planos
-    # de forma similar a la anterior pero en este caso las caras a las que se mira de frente son
-    # la izquierda y la derecha, recibira una posicon lineal y devolvera una lista de N planos
+    # funciona igual que la funcion antarior pero para las caras Izquierda y Derecha
     def convertirPosicionLinealEnCoordenadasPlanosIzquierda(self, lineal):
 
         if lineal == 0:
@@ -313,8 +335,7 @@ class CuboRubik:
     def rotarCaraPosteriorHorario(self):
 
         # usa la misma funcion que frontal porque ambos
-        # utilizan una topologia de planos similar,
-        # como un espejo
+        # utilizan una topologia de planos similar
         self.rotarValoresFrontalesHorario([8,6,24,26])
 
         self.rotarValoresFrontalesHorario([17,7,15,25])
@@ -358,8 +379,6 @@ class CuboRubik:
         cantidadValores=len(valoresRotar)
 
         # se crea una variable para almacenar la informacion del primer elemento
-        # esto se hace porque no se como declarar metodos estaticos
-        # PENDIENTE: implementarlo con metodos estaticos
         subCuboAuxiliar=SubCubo(0,0,0,0,0)
         # se guarda una copia del primer elemento
         subCuboAuxiliar.copiarSubCubo(self.SubCubos[valoresRotar[0]])
@@ -400,9 +419,7 @@ class CuboRubik:
         planosActual = self.convertirPosicionLinealEnCoordenadasPlanosFrontal(valorActual)
         self.SubCubos[valorActual].orientacionColoresActual=[0,0,0,0,0,0]
         for j in range(len(planosSiguiente)):
-                planoParaActual=planosActual[j]
-                planoParaSiguiente=planosSiguiente[j]
-                self.SubCubos[valorActual].orientacionColoresActual[planoParaActual]=subCuboAuxiliar.orientacionColoresActual[planoParaSiguiente]
+                self.SubCubos[valorActual].orientacionColoresActual[planosActual[j]]=subCuboAuxiliar.orientacionColoresActual[planosSiguiente[j]]
 
     # actua de forma identica que el metodo anterior pero las definiciones de los
     # planos que consulta son distintas , es decir corresponden a otra funcion de matcheo del espacio de la recta
@@ -417,22 +434,13 @@ class CuboRubik:
             siguienteValor=valoresRotar[i+1]
 
             self.SubCubos[valorActual].copiarSubCubo(self.SubCubos[siguienteValor])
-            posicionActual=self.convertirPosicionLinealEnCoordenadas(valorActual)
-            self.SubCubos[valorActual].posicionActual=posicionActual
+            self.SubCubos[valorActual].posicionActual=self.convertirPosicionLinealEnCoordenadas(valorActual)
 
             planosSiguiente= self.convertirPosicionLinealEnCoordenadasPlanosIzquierda(siguienteValor)
             planosActual= self.convertirPosicionLinealEnCoordenadasPlanosIzquierda(valorActual)
             self.SubCubos[valorActual].orientacionColoresActual=[0,0,0,0,0,0]
             for j in range(len(planosSiguiente)):
-                planoParaActual=planosActual[j]
-                planoParaSiguiente=planosSiguiente[j]
-
-                orientacionActual=self.SubCubos[valorActual].orientacionColoresActual
-                orientacionSiguiente=self.SubCubos[siguienteValor].orientacionColoresActual
-                self.SubCubos[valorActual].orientacionColoresActual[planoParaActual]=self.SubCubos[siguienteValor].orientacionColoresActual[planoParaSiguiente]
-            subcubo=self.SubCubos[valorActual]
-            a=1
-
+                self.SubCubos[valorActual].orientacionColoresActual[planosActual[j]]=self.SubCubos[siguienteValor].orientacionColoresActual[planosSiguiente[j]]
         valorActual=valoresRotar[len(valoresRotar)-1]
         siguienteValor=valoresRotar[0]
         self.SubCubos[valorActual].copiarSubCubo(subCuboAuxiliar)
@@ -441,9 +449,7 @@ class CuboRubik:
         planosActual = self.convertirPosicionLinealEnCoordenadasPlanosIzquierda(valorActual)
         self.SubCubos[valorActual].orientacionColoresActual=[0,0,0,0,0,0]
         for j in range(len(planosSiguiente)):
-                planoParaActual=planosActual[j]
-                planoParaSiguiente=planosSiguiente[j]
-                self.SubCubos[valorActual].orientacionColoresActual[planoParaActual]=subCuboAuxiliar.orientacionColoresActual[planoParaSiguiente]
+                self.SubCubos[valorActual].orientacionColoresActual[planosActual[j]]=subCuboAuxiliar.orientacionColoresActual[planosSiguiente[j]]
 
 
 
