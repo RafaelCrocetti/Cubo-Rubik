@@ -1,14 +1,18 @@
 import math
+import random as rnd
 from modelo.SubCubo import SubCubo
+from modelo.Manhattan import  Manhattan
 #  representa el cubo como un conjunto de subcubos
 # que se mueven dentro de una lista y que seon capaces de cambiar su orientacion
 # y posicion
 class CuboRubik:
 
     def __init__(self):
+        # conjunto de subCubos que forman el cubo
         self.SubCubos=[]
 
-
+        # conjunto de movientos validos del cubo
+        self.movimientosValidos = ["F", "F'", "B", "B'", "U", "U'", "D", "D'", "L", "L'", "R", "R'"]
         # las caras estan enumeradas como un cubo desarrollado en un plano
         # se comienzan a contar los sub cubos desde la posicion (0,0,0) asignandole el valor 0
         # hasta la posicion (2,2,2) asociandole el valor 26, las filas se llenan primero en x
@@ -538,6 +542,66 @@ class CuboRubik:
         for j in range(len(planosSiguiente)):
                 self.SubCubos[valorActual].orientacionColoresActual[planosActual[j]]=subCuboAuxiliar.orientacionColoresActual[planosSiguiente[j]]
 
+    # toma un string de movimientos separados por comas en la nomenclatura Singemaster
+    #  y los ejecuta en el cubo
+    def realizarMovimiento(self, movimiento):
+        rotaciones = movimiento.split(",")
+        for i in range(len(rotaciones)):
+            if rotaciones[i] == "F":
+                self.rotarCaraFrontalHorario()
+            elif rotaciones[i] == "F'":
+                self.rotarCaraFrontalAntiHorario()
+            elif rotaciones[i] == "B":
+                self.rotarCaraPosteriorHorario()
+            elif rotaciones[i] == "B'":
+                self.rotarCaraPosteriorAntiHorario()
+            elif rotaciones[i] == "U":
+                self.rotarCaraSuperiorHorario()
+            elif rotaciones[i] == "U'":
+                self.rotarCaraSuperiorHorario()
+            elif rotaciones[i] == "D":
+                self.rotarCaraInferiorHorario()
+            elif rotaciones[i] == "D'":
+                self.rotarCaraInferiorAntiHorario()
+            elif rotaciones[i] == "L":
+                self.rotarCaraIzquierdaHorario()
+            elif rotaciones[i] == "L'":
+                self.rotarCaraIzquierdaAntiHorario()
+            elif rotaciones[i] == "R":
+                self.rotarCaraDerechaHorario()
+            elif rotaciones[i] == "R'":
+                self.rotarCaraDerechaAntiHorario()
+
+    # genera una secuencia al azar de movimientos para mezclar el cubo
+    def generarSecuenciaMezclado(self, cantidadMovimientos):
+
+        siguienteIndice = rnd.randint(0, 11)
+        siguienteMovimiento = self.movimientosValidos[siguienteIndice]
+        movimientos = siguienteMovimiento
+        for i in range(cantidadMovimientos - 1):
+            siguienteIndice = rnd.randint(0, 11)
+            siguienteMovimiento = self.movimientosValidos[siguienteIndice]
+            movimientos = movimientos + "," + siguienteMovimiento
+        return movimientos
+
+    # halla la distancia manhatam al cubo solucion
+    def hallarDistancaSolucion(self):
+        distancia = 0
+        for i in range(len(self.SubCubos)):
+            distancia = distancia + Manhattan.hallarDistanciaManhattan(self.SubCubos[i].posicionActual,self.SubCubos[i].posicionObjetivo)
+        return distancia
+    #halla la distancia manhatam entre a otro cubo
+    def hallarDistanciaACubo(self,cubo):
+        distancia=0
+        for i in range(len(self.SubCubos)):
+            distancia=distancia+Manhattan.hallarDistanciaManhattan(self.SubCubos[i].posicionActual,cubo.hallarSubCubo(self.SubCubos[i].id).posicionActual)
+        return distancia
+
+    # devuelve la referencia a un subCubo dado su id
+    def hallarSubCubo(self,id):
+        for i in range(len(self.SubCubos)):
+            if self.SubCubos[i].id==id:
+                return self.SubCubos[i]
 
 
 
