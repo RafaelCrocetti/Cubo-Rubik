@@ -1,3 +1,4 @@
+# libreria local para hallar distancia Manhattan
 class Manhattan:
     # halla la distancia manhatam entre dos posiciones en el espacio X,Y,Z
     @staticmethod

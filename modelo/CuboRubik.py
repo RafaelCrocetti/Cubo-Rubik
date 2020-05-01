@@ -603,5 +603,17 @@ class CuboRubik:
             if self.SubCubos[i].id==id:
                 return self.SubCubos[i]
 
+    # verifica si cada uno de los subcubos se encuentra en su estado objetivo
+    def esSolucion(self):
+        for i in range(len(self.SubCubos)):
+            if  not self.SubCubos[i].enEstadoObjetivo():
+                return False
+        return True
 
+    # verifica si un cubo es igual a otro
+    def esIgual(self,cubo):
+        for i in range(len(self.SubCubos)):
+            if not self.SubCubos[i].esIgual(cubo.SubCubos[i]):
+                return False
+        return  True
 

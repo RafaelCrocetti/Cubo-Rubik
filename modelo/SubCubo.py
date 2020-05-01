@@ -45,3 +45,16 @@ class SubCubo:
         self.posicionObjetivo = subCubo.posicionObjetivo
         self.orientacionColoresActual = subCubo.orientacionColoresActual
         self.orientacionColoresObjetivo = subCubo.orientacionColoresObjetivo
+
+    # verifica si el subCubo se encuentra en la posicion y orientacion objetivos
+    def enEstadoObjetivo(self):
+        for i in range(len(self.posicionActual)):
+            if self.posicionActual[i]!=self.posicionObjetivo[i]:
+                return False
+        for i in range(len(self.orientacionColoresActual)):
+            if self.orientacionColoresActual[i]!=self.orientacionColoresObjetivo[i]:
+                return False
+        return  True
+
+    def esIgual(self,subCubo):
+        return self.id==subCubo.id
