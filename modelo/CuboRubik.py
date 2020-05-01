@@ -317,6 +317,47 @@ class CuboRubik:
             planos = [ 2, 0,3]
         return planos
 
+    # funciona igual que la funcion antarior pero para las caras Superior e Inferior
+    def convertirPosicionLinealEnCoordenadasPlanosSuperior(self, lineal):
+        if lineal==0:
+            planos=[1,5,4]
+        elif lineal==1:
+            planos=[5,4]
+        elif lineal==2:
+            planos=[5, 3, 4]
+        elif lineal==3:
+            planos=[1, 4]
+        elif lineal==4:
+            planos=[4]
+        elif lineal==5:
+            planos=[3, 4]
+        elif lineal==6:
+            planos=[0, 1, 4]
+        elif lineal==7:
+            planos=[0, 4]
+        elif lineal==8:
+            planos=[3, 0, 4]
+        elif lineal==18:
+            planos=[5, 1, 2]
+        elif lineal==19:
+            planos=[5, 2]
+        elif lineal==20:
+            planos=[3, 5, 2]
+        elif lineal==21:
+            planos=[1, 2]
+        elif lineal==22:
+            planos=[2]
+        elif lineal==23:
+            planos=[3, 2]
+        elif lineal==24:
+            planos=[1, 0, 2]
+        elif lineal==25:
+            planos=[0, 2]
+        elif lineal==26:
+            planos=[0, 3, 2]
+
+        return planos
+
     # rota la cara frontal en sentido horario
     def rotarCaraFrontalHorario(self):
 
@@ -369,6 +410,25 @@ class CuboRubik:
         self.rotarValoresIzquierdaReloj([26,8,2,20])
         self.rotarValoresIzquierdaReloj([23,17,5,11])
 
+    # rota la cara superior en sentido horario
+    def rotarCaraSuperiorHorario(self):
+        self.rotarValoresSuperiorReloj([26, 24, 18, 20])
+        self.rotarValoresSuperiorReloj([25, 21, 19, 23])
+
+    # rota la cara superior en sentido anti horario
+    def rotarCaraSuperiorAntiHorario(self):
+        self.rotarValoresSuperiorReloj([26, 20, 18, 24])
+        self.rotarValoresSuperiorReloj([25, 23, 19, 21])
+
+    # rota la cara inferior en sentido horario
+    def rotarCaraInferiorHorario(self):
+        self.rotarValoresSuperiorReloj([8, 6, 0, 2])
+        self.rotarValoresSuperiorReloj([7, 3, 1, 5])
+
+    # rota la cara inferior en sentido anti horario
+    def rotarCaraInferiorAntiHorario(self):
+        self.rotarValoresSuperiorReloj([8, 2, 0, 6])
+        self.rotarValoresSuperiorReloj([7, 5, 1, 3])
 
     # toma una lista de posiciones en la lista de subcubos e intercambia en el espacio
     # de posiciones cartesianas y de orientacion de los subcubos los elementos de la lista
@@ -451,7 +511,32 @@ class CuboRubik:
         for j in range(len(planosSiguiente)):
                 self.SubCubos[valorActual].orientacionColoresActual[planosActual[j]]=subCuboAuxiliar.orientacionColoresActual[planosSiguiente[j]]
 
+    # lo mismo que la funcion anterior pero aplica a las caras Superior e Inferior
+    def rotarValoresSuperiorReloj(self,valoresRotar):
+        cantidadValores=len(valoresRotar)
+        subCuboAuxiliar=SubCubo(0,0,0,0,0)
+        subCuboAuxiliar.copiarSubCubo(self.SubCubos[valoresRotar[0]])
+        for i in range(0,cantidadValores-1,1):
+            valorActual=valoresRotar[i]
+            siguienteValor=valoresRotar[i+1]
 
+            self.SubCubos[valorActual].copiarSubCubo(self.SubCubos[siguienteValor])
+            self.SubCubos[valorActual].posicionActual=self.convertirPosicionLinealEnCoordenadas(valorActual)
+
+            planosSiguiente= self.convertirPosicionLinealEnCoordenadasPlanosSuperior(siguienteValor)
+            planosActual= self.convertirPosicionLinealEnCoordenadasPlanosSuperior(valorActual)
+            self.SubCubos[valorActual].orientacionColoresActual=[0,0,0,0,0,0]
+            for j in range(len(planosSiguiente)):
+                self.SubCubos[valorActual].orientacionColoresActual[planosActual[j]]=self.SubCubos[siguienteValor].orientacionColoresActual[planosSiguiente[j]]
+        valorActual=valoresRotar[len(valoresRotar)-1]
+        siguienteValor=valoresRotar[0]
+        self.SubCubos[valorActual].copiarSubCubo(subCuboAuxiliar)
+        self.SubCubos[valorActual].posicionActual=self.convertirPosicionLinealEnCoordenadas(valorActual)
+        planosSiguiente = self.convertirPosicionLinealEnCoordenadasPlanosSuperior(siguienteValor)
+        planosActual = self.convertirPosicionLinealEnCoordenadasPlanosSuperior(valorActual)
+        self.SubCubos[valorActual].orientacionColoresActual=[0,0,0,0,0,0]
+        for j in range(len(planosSiguiente)):
+                self.SubCubos[valorActual].orientacionColoresActual[planosActual[j]]=subCuboAuxiliar.orientacionColoresActual[planosSiguiente[j]]
 
 
 
