@@ -29,7 +29,8 @@ class Nodo:
             nuevoHijo=Nodo(self,movimiento,nuevoCubo)
             # calcula la distancia al origen del nodo hijo como la distancia actual al origen mas la distancia al hijo
             # desde el nodo actual
-            nuevoHijo.distanciaOrigen=self.distanciaOrigen+self.cuboRubik.hallarDistanciaACubo(nuevoHijo.cuboRubik)
+            # 16 es la distancia entre un cubo y cualquiera de sus hijos
+            nuevoHijo.distanciaOrigen=self.distanciaOrigen+16
             hijos.append(nuevoHijo)
         return hijos
 

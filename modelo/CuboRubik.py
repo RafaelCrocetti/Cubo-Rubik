@@ -22,7 +22,7 @@ class CuboRubik:
                     # verificar los 3 if, uno para cada coordenada
 
                     posicionActual=[i, j, k]
-                    posicionObjetivo=[i, i, k]
+                    posicionObjetivo=[i, j, k]
 
                     # cada plano es representado por un numero de acuerdo a la siguiente nomclatura
                     # 1: posterior
@@ -533,33 +533,43 @@ class CuboRubik:
     # halla la distancia manhatam al cubo solucion
     def hallarDistancaSolucion(self):
         distancia = 0
-        for i in range(len(self.SubCubos)):
-            distancia = distancia + Manhattan.hallarDistanciaManhattan(self.SubCubos[i].posicionActual,self.SubCubos[i].posicionObjetivo)
+        for k in range(3):
+            for j in range(3):
+                for i in range(3):
+                    distancia = distancia + Manhattan.hallarDistanciaManhattan(self.SubCubos[i][j][k].posicionActual,self.SubCubos[i][j][k].posicionObjetivo)
         return distancia
-    #halla la distancia manhatam entre a otro cubo
+    # halla la distancia manhatam a otro cubo
     def hallarDistanciaACubo(self,cubo):
         distancia=0
-        for i in range(len(self.SubCubos)):
-            distancia=distancia+Manhattan.hallarDistanciaManhattan(self.SubCubos[i].posicionActual,cubo.hallarSubCubo(self.SubCubos[i].id).posicionActual)
+        for k in range(3):
+            for j in range(3):
+                for i in range(3):
+                    distancia=distancia+Manhattan.hallarDistanciaManhattan(self.SubCubos[i][j][k].posicionActual,cubo.hallarSubCubo(self.SubCubos[i][j][k].id).posicionActual)
         return distancia
 
     # devuelve la referencia a un subCubo dado su id
     def hallarSubCubo(self,id):
-        for i in range(len(self.SubCubos)):
-            if self.SubCubos[i].id==id:
-                return self.SubCubos[i]
+        for k in range(3):
+            for j in range(3):
+                for i in range(3):
+                    if self.SubCubos[i][j][k].id==id:
+                        return self.SubCubos[i][j][k]
 
     # verifica si cada uno de los subcubos se encuentra en su estado objetivo
     def esSolucion(self):
-        for i in range(len(self.SubCubos)):
-            if  not self.SubCubos[i].enEstadoObjetivo():
-                return False
+        for k in range(3):
+            for j in range(3):
+                for i in range(3):
+                    if not self.SubCubos[i][j][k].enEstadoObjetivo():
+                        return False
         return True
 
     # verifica si un cubo es igual a otro
     def esIgual(self,cubo):
-        for i in range(len(self.SubCubos)):
-            if not self.SubCubos[i].esIgual(cubo.SubCubos[i]):
-                return False
+        for k in range(3):
+            for j in range(3):
+                for i in range(3):
+                    if not self.SubCubos[i][j][k].esIgual(cubo.SubCubos[i][j][k]):
+                        return False
         return  True
 

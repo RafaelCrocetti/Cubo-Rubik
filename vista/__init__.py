@@ -1,13 +1,5 @@
 from modelo.CuboRubik import CuboRubik
-from modelo.Manhattan import Manhattan
 from modelo.Nodo import Nodo
-if __name__ == '__main__':
-    cubo=CuboRubik()
-    cubo.rotarCaraInferiorHorario()
-    cubo.rotarCaraInferiorAntiHorario()
-    cubo.print()
-
-
 
 
 def buscarSolucion(nodoInicio,cola,nodosMuertos):
@@ -19,39 +11,59 @@ def buscarSolucion(nodoInicio,cola,nodosMuertos):
             return nodoActual
         nodosHijos = nodoActual.obtenerHijos()
         for nodo in nodosHijos:
-            if self.nodoVivo(nodo):
-                self.insertarNodo(nodo)
-        self.ordenarLista()
+            if nodoVivo(nodosMuertos,nodo):
+                insertarNodo(cola,nodo)
+        ordenarLista(cola)
     return nodoActual
 
-
-def insertarNodo(self, nodoInsertar):
+# inserta un nuevo nodo a la cola si es posible
+def insertarNodo(cola, nodoInsertar):
     nodoEnCola = None
-    for nodo in self.cola:
-        if nodoInsertar.comparar(nodoInsertar) == 0:
+    for nodo in cola:
+        if nodoInsertar.esIgual(nodo):
             if nodo.distanciaOrigen > nodoInsertar.distanciaOrigen:
                 nodo = nodoInsertar
                 nodoEnCola = nodo
             break
-
     if nodoEnCola == None:
-        self.cola.append(nodoInsertar)
+        cola.append(nodoInsertar)
 
-
-def nodoVivo(self, nodo):
-    for muerto in self.nodosMuertos:
-        if nodo.comparar(muerto) == 0:
+# virifica si el nodo se encuentra en la lista de nodos muertos
+def nodoVivo(nodosMuertos, nodo):
+    for muerto in nodosMuertos:
+        if nodo.esIgual(muerto):
             return False
     return True
 
 
-# reemplazar por quick sort
-def ordenarLista(self):
-    for passnum in range(len(self.cola) - 1, 0, -1):
+# ordena la cola segun un costo basado en la heuristica de distancia al objetivo
+# mas la distancia al origen
+# PENDIENTE reemplazar por quick sort
+def ordenarLista(cola):
+    for passnum in range(len(cola) - 1, 0, -1):
         for i in range(passnum):
-            costoNodoActual = self.cola[i].distanciaOrigen  # +self.cola[i].distanciaObjetivo
-            costoNodoSiguiente = self.cola[i + 1].distanciaOrigen  # +self.cola[i+1].distanciaObjetivo
+            costoNodoActual = cola[i].distanciaOrigen   + cola[i].distanciaObjetivo
+            costoNodoSiguiente = cola[i + 1].distanciaOrigen   + cola[i+1].distanciaObjetivo
             if costoNodoActual > costoNodoSiguiente:
-                temp = self.cola[i]
-                self.cola[i] = self.cola[i + 1]
-                self.cola[i + 1] = temp
+                temp = cola[i]
+                cola[i] = cola[i + 1]
+                cola[i + 1] = temp
+if __name__ == '__main__':
+    cubo=CuboRubik()
+    cubo.realizarMovimiento(cubo.generarSecuenciaMezclado(50))
+
+    nodo=Nodo(None,None,cubo)
+    nodoInicio = nodo
+    cola = []
+    nodosMuertos = []
+    nodoInicio.distanciaOrigen = 0
+    cola.append(nodoInicio)
+
+    solucion=buscarSolucion(nodoInicio,cola,nodosMuertos)
+    padre=solucion.nodoPadre
+    nodoActual=solucion
+    while padre!=None:
+        nodoActual.cuboRubik.print()
+        print("")
+        nodoActual=nodoActual.nodoPadre
+        padre=nodoActual.nodoPadre
