@@ -3,6 +3,8 @@ from modelo.Manhattan import Manhattan
 from modelo.Nodo import Nodo
 if __name__ == '__main__':
     cubo=CuboRubik()
+    cubo.rotarCaraInferiorHorario()
+    cubo.rotarCaraInferiorAntiHorario()
     cubo.print()
 
 

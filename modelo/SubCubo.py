@@ -44,6 +44,8 @@ class SubCubo:
 
     # trabsforma el subcubo en una copia del otro
     def copiarSubCubo(self,subCubo):
+        self.id=subCubo.id
+        self.colores=subCubo.colores
         self.posicionActual = subCubo.posicionActual
         self.posicionObjetivo = subCubo.posicionObjetivo
         self.orientacionActual = subCubo.orientacionActual
