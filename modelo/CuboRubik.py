@@ -9,135 +9,123 @@ class CuboRubik:
 
     def __init__(self):
         # conjunto de subCubos que forman el cubo
-        self.SubCubos=[]
+        # se inicializa llenando la matriz de ceros
+        self.SubCubos = [[[0 for i in range(3)] for j in range(3)] for k in range(3)]
 
         # conjunto de movientos validos del cubo
         self.movimientosValidos = ["F", "F'", "B", "B'", "U", "U'", "D", "D'", "L", "L'", "R", "R'"]
-        # las caras estan enumeradas como un cubo desarrollado en un plano
-        # se comienzan a contar los sub cubos desde la posicion (0,0,0) asignandole el valor 0
-        # hasta la posicion (2,2,2) asociandole el valor 26, las filas se llenan primero en x
-        # luego en y y finalmente se incrementa z todos van del 0 al 2
-
         id=0
         for k in range(3):
             for j in range(3):
                 for i in range(3):
-                    if id==0:
-                        orientacionActual = [0,2,0,0,5,6]
-                        orientacionObjetivo = [0,2,0,0,5,6]
+                    # esto ahorra las millones de lineas de codigo para
+                    # verificar los 3 if, uno para cada coordenada
+
+                    posicionActual=[i, j, k]
+
+                    # cada plano es representado por un numero de acuerdo a la siguiente nomclatura
+                    # 1: posterior
+                    # 2: izquierda
+                    # 3: superior
+                    # 4: derecha
+                    # 5: inferior
+                    # 6: frontal
+                    # 7: ninguna
+                    # cada color es representado por un numero de acuerdo a  la siguiente nomclatura
+                    # 1: Verde
+                    # 2: Amarillo
+                    # 3: Rojo
+                    # 4: Blanco
+                    # 5: Naranja
+                    # 6: Azol
+                    # 7: Sin Color
+                    if id == 0:
+                        orientacionActual=[2, 5, 6]
                     elif id==1:
-                        orientacionActual = [0,0,0,0,5,6]
-                        orientacionObjetivo = [0,0,0,0,5,6]
+                        orientacionActual=[5, 6]
                     elif id==2:
-                        orientacionActual = [0,0,0,4,5,6]
-                        orientacionObjetivo = [0,0,0,4,5,6]
+                        orientacionActual=[4, 5, 6]
                     elif id==3:
-                        orientacionActual = [0,2,0,0,5,0]
-                        orientacionObjetivo = [0,2,0,0,5,0]
+                        orientacionActual=[2, 5]
                     elif id==4:
-                        orientacionActual = [0,0,0,0,5,0]
-                        orientacionObjetivo = [0,0,0,0,5,0]
+                        orientacionActual=[5]
                     elif id==5:
-                        orientacionActual = [0,0,0,4,5,0]
-                        orientacionObjetivo = [0,0,0,4,5,0]
+                        orientacionActual=[4, 5]
                     elif id==6:
-                        orientacionActual = [1,2,0,0,5,0]
-                        orientacionObjetivo = [1,2,0,0,5,0]
+                        orientacionActual=[1, 2, 5]
                     elif id==7:
-                        orientacionActual = [1,0,0,0,5,0]
-                        orientacionObjetivo = [1,0,0,0,5,0]
+                        orientacionActual=[1, 5]
                     elif id==8:
-                        orientacionActual = [1,0,0,4,5,0]
-                        orientacionObjetivo = [1,0,0,4,5,0]
+                        orientacionActual=[1, 4, 5]
                     elif id==9:
-                        orientacionActual = [0,2,0,0,0,6]
-                        orientacionObjetivo = [0,2,0,0,0,6]
+                        orientacionActual=[2, 6]
                     elif id==10:
-                        orientacionActual = [0,0,0,0,0,6]
-                        orientacionObjetivo = [0,0,0,0,0,6]
+                        orientacionActual=[6]
                     elif id==11:
-                        orientacionActual = [0,0,0,4,0,6]
-                        orientacionObjetivo = [0,0,0,4,0,6]
+                        orientacionActual=[4, 6]
                     elif id==12:
-                        orientacionActual = [0,2,0,0,0,0]
-                        orientacionObjetivo = [0,2,0,0,0,0]
+                        orientacionActual=[2]
                     elif id==13:
-                        orientacionActual = [0,0,0,0,0,0]
-                        orientacionObjetivo = [0,0,0,0,0,0]
+                        orientacionActual=[7]
                     elif id==14:
-                        orientacionActual = [0,0,0,4,0,0]
-                        orientacionObjetivo = [0,0,0,4,0,0]
+                        orientacionActual=[4]
                     elif id==15:
-                        orientacionActual = [1,2,0,0,0,0]
-                        orientacionObjetivo = [1,2,0,0,0,0]
+                        orientacionActual=[1, 2]
                     elif id==16:
-                        orientacionActual = [1,0,0,0,0,0]
-                        orientacionObjetivo = [1,0,0,0,0,0]
+                        orientacionActual=[1]
                     elif id==17:
-                        orientacionActual = [1,0,0,4,0,0]
-                        orientacionObjetivo = [1,0,0,4,0,0]
+                        orientacionActual=[1, 4]
                     elif id==18:
-                        orientacionActual   = [0,2,3,0,0,6]
-                        orientacionObjetivo = [0,2,3,0,0,6]
+                        orientacionActual=[2, 3, 6]
                     elif id==19:
-                        orientacionActual   = [0,0,3,0,0,6]
-                        orientacionObjetivo = [0,0,3,0,0,6]
+                        orientacionActual=[3, 6]
                     elif id==20:
-                        orientacionActual   = [0,0,3,4,0,6]
-                        orientacionObjetivo = [0,0,3,4,0,6]
+                        orientacionActual=[3, 4, 6]
                     elif id==21:
-                        orientacionActual   = [0,2,3,0,0,0]
-                        orientacionObjetivo = [0,2,3,0,0,0]
+                        orientacionActual=[2, 3]
                     elif id==22:
-                        orientacionActual   = [0,0,3,0,0,0]
-                        orientacionObjetivo = [0,0,3,0,0,0]
+                        orientacionActual=[3]
                     elif id==23:
-                        orientacionActual   = [0,0,3,4,0,0]
-                        orientacionObjetivo = [0,0,3,4,0,0]
+                        orientacionActual=[3, 4]
                     elif id==24:
-                        orientacionActual   = [1,2,3,0,0,0]
-                        orientacionObjetivo = [1,2,3,0,0,0]
+                        orientacionActual=[1, 2, 3]
                     elif id==25:
-                        orientacionActual   = [1,0,3,0,0,0]
-                        orientacionObjetivo = [1,0,3,0,0,0]
+                        orientacionActual=[1, 3]
                     elif id==26:
-                        orientacionActual   = [1,0,3,4,0,0]
-                        orientacionObjetivo = [1,0,3,4,0,0]
+                        orientacionActual=[1, 3, 4]
+                    # este else solo existe para evitar un warning en el codigo
+                    else:
+                        orientacionActual=[7]
 
-                    posicionActual=[i,j,k]
-                    posicionObjetivo=[i,j,k]
-
-
-                    subCubo = SubCubo(id, posicionActual, posicionObjetivo, orientacionActual, orientacionObjetivo)
-                    self.SubCubos.append(subCubo)
+                    self.SubCubos[i][j][k]=SubCubo(posicionActual,posicionActual,orientacionActual,orientacionActual,orientacionActual)
                     id=id+1
 
-    # muestra  en plantalla el cubo desarrollado de acuerdo al siguiente orden # 0: posterior
-    #         # 1: izquierda
-    #         # 2: superior
-    #         # 3: derecha
-    #         # 4: inferior
-    #         # 5: frontal
-    #         # 6: ninguna
+
+    # muestra  en plantalla el cubo desarrollado de acuerdo al siguiente orden
+    # 1: posterior
+    # 2: izquierda
+    # 3: superior
+    # 4: derecha
+    # 5: inferior
+    # 6: frontal
+    # 7: ninguna
     # cada color es representado por un numero siguiendo la siguiente nomclatura
-    # Sin Color= 0
-    # Verde=1
-    # Amarillo=2
-    # Rojo=3
-    # Blanco=4
-    # Naranja=5
-    # Azol= 6
+    # 1: Verde
+    # 2: Amarillo
+    # 3: Rojo
+    # 4: Blanco
+    # 5: Naranja
+    # 6: Azol
+    # 7: Sin Color
 
     def print(self):
 
-        #cara 0
+        #cara 1
         for k in range(3):
             renglon = "       "
             for i in range(3):
-                id=self.convertirCoordenadasEnPosicionLineal([i,2,k])
-                subCubo=self.SubCubos[id]
-                orientacion=subCubo.orientacionColoresActual
-                color=subCubo.orientacionColoresActual[0]
+                subCubo=self.SubCubos[i][2][k]
+                color=subCubo.obtenerColorPlano(1)
 
                 renglon=renglon+" "+str(color)
 
@@ -145,72 +133,47 @@ class CuboRubik:
 
         for j in range(2,-1,-1):
             renglon = ""
-            # cara 1
-            for k in range(3):
-                id = self.convertirCoordenadasEnPosicionLineal([0, j, k])
-                subCubo=self.SubCubos[id]
-                color=subCubo.orientacionColoresActual[1]
-                renglon = renglon + " "+str(color)
             # cara 2
+            for k in range(3):
+                subCubo=self.SubCubos[0][ j][ k]
+                color=subCubo.obtenerColorPlano(2)
+                renglon = renglon + " "+str(color)
+            # cara 3
             agregar=" "
             for i in range(3):
-                id = self.convertirCoordenadasEnPosicionLineal([i, j, 2])
-                subCubo=self.SubCubos[id]
-                color=subCubo.orientacionColoresActual[2]
+                subCubo=self.SubCubos[i][j][2]
+                color=subCubo.obtenerColorPlano(3)
                 agregar = agregar + " " + str(color)
 
             renglon=renglon+agregar
             agregar = " "
-            #cara 3
+            #cara 4
             for k in range(2,-1,-1):
-                id = self.convertirCoordenadasEnPosicionLineal([2, j, k])
-                subCubo=self.SubCubos[id]
-                color=subCubo.orientacionColoresActual[3]
+                subCubo=self.SubCubos[2][j][k]
+                color=subCubo.obtenerColorPlano(4)
                 agregar = agregar + " "+str(color)
 
             renglon = renglon + agregar
             agregar = " "
-            #cara 4
+            #cara 5
             for i in range(2,-1,-1):
-                id = self.convertirCoordenadasEnPosicionLineal([i, j, 0])
-                subCubo=self.SubCubos[id]
-                color=subCubo.orientacionColoresActual[4]
+                subCubo=self.SubCubos[i][j][0]
+                color=subCubo.obtenerColorPlano(5)
                 agregar = agregar + " " + str(color)
             renglon = renglon + agregar
             print(renglon)
 
-        #cara 5
+        #cara 6
         for k in range(2,-1,-1):
             renglon = "       "
             for i in range(3):
-                id = self.convertirCoordenadasEnPosicionLineal([i, 0, k])
-                subCubo=self.SubCubos[id]
-                color=subCubo.orientacionColoresActual[5]
+                subCubo=self.SubCubos[i][0][k]
+                color=subCubo.obtenerColorPlano(6)
                 renglon = renglon + " " + str(color)
             print(renglon)
 
 
-    # convierte las coordenadas de un SybCubo en la posicion en la lista de subCubos que le corresponde
-    def convertirCoordenadasEnPosicionLineal(self,coordenadas):
-        # por la forma que se eligieron las posiciones de los
-        # subcubos en la lista de subcubos cada trio de coordenadas
-        # en el espacio da como resultado un numero en ternario que
-        # representa la posicion en la lista , al pasar ese numero a
-        # decimal se tiene la posicion exacta en la lista que le
-        # corresponde a ese subcubo dada su posicion actual en el espacio
-        return coordenadas[0]+3*coordenadas[1]+9*coordenadas[2]
 
-    # convierte la posicion de un subCubo en la lista a la posicion en el espacio que le corresponde
-    def convertirPosicionLinealEnCoordenadas(self,lineal):
-        # descomponiendo en ternario la posicion actual en la lista de subCubos
-        # se pueden calcular las tres coordenadas espaciales asociadas a la posicion
-        # actual del subCubo
-        cociente=math.floor((lineal)/3)
-        x=(lineal)%3
-        y=cociente%3
-        z=math.floor(cociente/3)%3
-        coordenadas=[x,y,z]
-        return  coordenadas
 
     # convierte la posicion de un subCubo en la lista de subcubos a una lista de planos ocupados por los stikers del subcubo
     # para subcubos ubicados en las caras  frontal y trasera

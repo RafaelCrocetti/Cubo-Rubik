@@ -2,13 +2,8 @@ from modelo.CuboRubik import CuboRubik
 from modelo.Manhattan import Manhattan
 from modelo.Nodo import Nodo
 if __name__ == '__main__':
-        cuboRubik=CuboRubik()
-        cuboRubik.realizarMovimiento(cuboRubik.generarSecuenciaMezclado(1))
-        nodoInicio = Nodo(None,"",cuboRubik)
-        cola = []
-        nodosMuertos = []
-        nodoInicio.distanciaOrigen = 0
-        cola.append(nodoInicio)
+    cubo=CuboRubik()
+    cubo.print()
 
 
 
