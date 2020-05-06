@@ -48,9 +48,11 @@ def ordenarLista(cola):
                 temp = cola[i]
                 cola[i] = cola[i + 1]
                 cola[i + 1] = temp
+
+
 if __name__ == '__main__':
     cubo=CuboRubik()
-    cubo.realizarMovimiento(cubo.generarSecuenciaMezclado(50))
+    cubo.realizarMovimiento(cubo.generarSecuenciaMezclado(3))
 
     nodo=Nodo(None,None,cubo)
     nodoInicio = nodo
