@@ -1,7 +1,7 @@
-from modelo.CuboRubik import CuboRubik
-from modelo.Nodo import Nodo
-import copy
 # libreria local para realizar busquedas A*
+# esta funcion diverge para cubos mezclados mas de 5 movimientos
+# se debe a que la heuristica de manhattan no es lo suficientemente buena.
+from modelo.QuickSort import  QuickSort
 class AEstrella:
 
     #busca el nodo solucion dado el nodo inicial, la direccion de una cola
@@ -20,10 +20,6 @@ class AEstrella:
                 if AEstrella.nodoVivo(nodosMuertos, nodo):
                     AEstrella.insertarNodo(cola, nodo)
             # el oredenador de la lista esta funcionando para 12 elementos
-            # PENDIENTE: el error puedede estar en la generacion de la distancia al origen o
-            # la distancia al objetivo(estos dos ultimos comprenden implicitamente una revision del metodo de medicion de distancia)
-            # o en el reemplazo de variables en el proceso de busqueda
-            # de la solucion
             AEstrella.ordenarLista(cola)
         return nodoActual
 
@@ -53,11 +49,4 @@ class AEstrella:
     # PENDIENTE reemplazar por quick sort
     @staticmethod
     def ordenarLista(cola):
-        for passnum in range(len(cola) - 1, 0, -1):
-            for i in range(passnum):
-                costoNodoActual = cola[i].distanciaOrigen + cola[i].distanciaObjetivo
-                costoNodoSiguiente = cola[i + 1].distanciaOrigen + cola[i + 1].distanciaObjetivo
-                if costoNodoActual > costoNodoSiguiente:
-                    temp = cola[i]
-                    cola[i] = cola[i + 1]
-                    cola[i + 1] = temp
+        QuickSort.quickSortList(cola)

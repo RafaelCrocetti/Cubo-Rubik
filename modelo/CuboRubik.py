@@ -1,7 +1,9 @@
-import math
 import random as rnd
+
+from modelo.Manhattan import Manhattan
 from modelo.SubCubo import SubCubo
-from modelo.Manhattan import  Manhattan
+
+
 #  representa el cubo como un conjunto de subcubos
 # que se mueven dentro de una lista y que seon capaces de cambiar su orientacion
 # y posicion

@@ -1,4 +1,3 @@
-from modelo.CuboRubik import CuboRubik
 import copy
 
 # modela el comportamiento de un nodo en el grafo de busqueda
@@ -42,3 +41,5 @@ class Nodo:
     def esIgual(self,nodo):
         # lo unico que se verifica es si los cubos son iguales
         return self.cuboRubik.esIgual(nodo.cuboRubik)
+    def heurisitca(self):
+        return self.distanciaOrigen+self.distanciaObjetivo
