@@ -15,7 +15,7 @@ class CuboRubik:
         self.SubCubos = [[[0 for i in range(3)] for j in range(3)] for k in range(3)]
 
         # conjunto de movientos validos del cubo
-        self.movimientosValidos = ["F", "F'", "B", "B'", "U", "U'", "D", "D'", "L", "L'", "R", "R'"]
+        self.movimientosValidos = ["F", "F'", "F2", "B", "B'", "B2", "U", "U'", "U2", "D", "D'", "D2", "L", "L'", "L2", "R", "R'", "R2"]
         id=0
         for k in range(3):
             for j in range(3):
@@ -493,43 +493,61 @@ class CuboRubik:
     # toma un string de movimientos separados por comas en la nomenclatura Singemaster
     #  y los ejecuta en el cubo
     def realizarMovimiento(self, movimiento):
-        rotaciones = movimiento.split(",")
+        rotaciones = movimiento.split(" ")
         for i in range(len(rotaciones)):
             if rotaciones[i] == "F":
                 self.rotarCaraFrontalHorario()
             elif rotaciones[i] == "F'":
                 self.rotarCaraFrontalAntiHorario()
+            elif rotaciones[i] == "F2":
+                self.rotarCaraFrontalHorario()
+                self.rotarCaraFrontalHorario()
             elif rotaciones[i] == "B":
                 self.rotarCaraPosteriorHorario()
             elif rotaciones[i] == "B'":
                 self.rotarCaraPosteriorAntiHorario()
+            elif rotaciones[i] == "B2":
+                self.rotarCaraPosteriorHorario()
+                self.rotarCaraPosteriorHorario()
             elif rotaciones[i] == "U":
                 self.rotarCaraSuperiorHorario()
             elif rotaciones[i] == "U'":
+                self.rotarCaraSuperiorHorario()
+            elif rotaciones[i] == "U2":
+                self.rotarCaraSuperiorHorario()
                 self.rotarCaraSuperiorHorario()
             elif rotaciones[i] == "D":
                 self.rotarCaraInferiorHorario()
             elif rotaciones[i] == "D'":
                 self.rotarCaraInferiorAntiHorario()
+            elif rotaciones[i] == "D2":
+                self.rotarCaraInferiorHorario()
+                self.rotarCaraInferiorHorario()
             elif rotaciones[i] == "L":
                 self.rotarCaraIzquierdaHorario()
             elif rotaciones[i] == "L'":
                 self.rotarCaraIzquierdaAntiHorario()
+            elif rotaciones[i] == "L2":
+                self.rotarCaraIzquierdaHorario()
+                self.rotarCaraIzquierdaHorario()
             elif rotaciones[i] == "R":
                 self.rotarCaraDerechaHorario()
             elif rotaciones[i] == "R'":
                 self.rotarCaraDerechaAntiHorario()
+            elif rotaciones[i] == "R2":
+                self.rotarCaraDerechaHorario()
+                self.rotarCaraDerechaHorario()
 
     # genera una secuencia al azar de movimientos para mezclar el cubo
     def generarSecuenciaMezclado(self, cantidadMovimientos):
 
-        siguienteIndice = rnd.randint(0, 11)
+        siguienteIndice = rnd.randint(0, 17)
         siguienteMovimiento = self.movimientosValidos[siguienteIndice]
         movimientos = siguienteMovimiento
         for i in range(cantidadMovimientos - 1):
-            siguienteIndice = rnd.randint(0, 11)
+            siguienteIndice = rnd.randint(0, 17)
             siguienteMovimiento = self.movimientosValidos[siguienteIndice]
-            movimientos = movimientos + "," + siguienteMovimiento
+            movimientos = movimientos + " " + siguienteMovimiento
         return movimientos
 
     # halla la distancia manhatam al cubo solucion

@@ -1,7 +1,6 @@
 
 # libreria local para realizar  orden de listas
 # utilizando el algoritmo quicksort
-import range as range
 
 
 class QuickSort:

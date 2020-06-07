@@ -3,7 +3,7 @@ import copy
 from modelo.AEstrella import AEstrella
 from modelo.CuboRubik import CuboRubik
 from modelo.Nodo import Nodo
-
+import sys
 
 # obtiene la lista de movimientos desde el nodo inicial hasta la solucion
 def obtenerListaSolucion(nodo):
@@ -40,8 +40,9 @@ def dibujarSolucion(nodoInicial, nodoFinal):
 
 
 if __name__ == '__main__':
+    sys.setrecursionlimit(10000000)
     cubo = CuboRubik()
-    cubo.realizarMovimiento(cubo.generarSecuenciaMezclado(4))
+    cubo.realizarMovimiento(cubo.generarSecuenciaMezclado(6))
     nodo = Nodo(None, None, cubo)
     nodoInicio = nodo
     cola = []
@@ -49,5 +50,5 @@ if __name__ == '__main__':
     nodoInicio.distanciaOrigen = 0
 
     solucion = AEstrella.buscarSolucion(nodoInicio, cola, nodosMuertos)
-
-    dibujarSolucion(nodoInicio, solucion)
+    cubo.print()
+    print(obtenerListaSolucion(solucion))
