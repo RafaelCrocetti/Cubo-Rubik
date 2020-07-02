@@ -2,13 +2,15 @@
 # esta funcion diverge para cubos mezclados mas de 5 movimientos
 # se debe a que la heuristica de manhattan no es lo suficientemente buena.
 from modelo.QuickSort import  QuickSort
+import time
 class AEstrella:
 
     #busca el nodo solucion dado el nodo inicial, la direccion de una cola
     # y la direccion de una lista de nodos muertos
     @staticmethod
-    def buscarSolucion(nodoInicio, cola, nodosMuertos):
+    def buscarSolucion(nodoInicio, cola, nodosMuertos,tiempoLimite):
         cola.append(nodoInicio)
+        startTime = time.time()
         nodoActual = nodoInicio
         while not nodoActual.esSolucion():
             nodoActual = cola.pop(0)
@@ -21,6 +23,10 @@ class AEstrella:
                     AEstrella.insertarNodo(cola, nodo)
             # el oredenador de la lista esta funcionando para 12 elementos
             AEstrella.ordenarLista(cola)
+            actualTime=time.time()
+            tiempoTranscurrido=actualTime-startTime
+            if tiempoTranscurrido>=tiempoLimite:
+                raise RuntimeError("tiempo maximo excedido, no se ha encontrado una solucion")
         return nodoActual
 
     # inserta un nuevo nodo a la cola si es posible

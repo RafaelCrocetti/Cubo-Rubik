@@ -4,17 +4,22 @@ from modelo.AEstrella import AEstrella
 from modelo.CuboRubik import CuboRubik
 from modelo.Nodo import Nodo
 import sys
+from twophase import solve
+
 
 # obtiene la lista de movimientos desde el nodo inicial hasta la solucion
 def obtenerListaSolucion(nodo):
-    padre = nodo.nodoPadre
-    nodoActual = nodo
-    movimientos = []
-    while padre != None:
-        movimientos.append(nodoActual.movimientoGenerador)
-        nodoActual = nodoActual.nodoPadre
-        padre = nodoActual.nodoPadre
-    return invertirLista(movimientos)
+    if nodo is not None:
+        padre = nodo.nodoPadre
+        nodoActual = nodo
+        movimientos = []
+        while padre != None:
+            movimientos.append(nodoActual.movimientoGenerador)
+            nodoActual = nodoActual.nodoPadre
+            padre = nodoActual.nodoPadre
+        return invertirLista(movimientos)
+    else:
+        return None
 
 
 # toma una lista y la invierte haciendo del primer elemento el ultimo
@@ -38,17 +43,29 @@ def dibujarSolucion(nodoInicial, nodoFinal):
         print("Movimiento :" + movimiento)
         cuboRevuelto.print()
 
-
-if __name__ == '__main__':
-    sys.setrecursionlimit(10000000)
-    cubo = CuboRubik()
+def ejecutarAEstrella(cubo):
     cubo.realizarMovimiento(cubo.generarSecuenciaMezclado(6))
     nodo = Nodo(None, None, cubo)
     nodoInicio = nodo
     cola = []
     nodosMuertos = []
     nodoInicio.distanciaOrigen = 0
+    try:
+        solucion = AEstrella.buscarSolucion(nodoInicio, cola, nodosMuertos,300)
+        print(obtenerListaSolucion(solucion))
+    except:
+        print("tiempo maximo excedido, no se encontro solucion")
 
-    solucion = AEstrella.buscarSolucion(nodoInicio, cola, nodosMuertos)
-    cubo.print()
-    print(obtenerListaSolucion(solucion))
+if __name__ == '__main__':
+    sys.setrecursionlimit(10000000)
+    cubo="UUULULFLFDUBDRRDBBUFLFFLBRRLDFFDDBUUFBRRLDRUDLBLFBBRRD"
+    solucionCubo=solve(cubo)
+    print(solucionCubo)
+    listaMovimientos=invertirLista(solucionCubo.split(" "))
+
+    cubo = CuboRubik()
+    cubo.realizarMovimientoLista(listaMovimientos)
+    ejecutarAEstrella(cubo)
+
+
+

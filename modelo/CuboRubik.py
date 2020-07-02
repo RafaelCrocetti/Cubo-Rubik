@@ -494,6 +494,9 @@ class CuboRubik:
     #  y los ejecuta en el cubo
     def realizarMovimiento(self, movimiento):
         rotaciones = movimiento.split(" ")
+        self.realizarMovimientoLista(rotaciones)
+
+    def realizarMovimientoLista(self,rotaciones):
         for i in range(len(rotaciones)):
             if rotaciones[i] == "F":
                 self.rotarCaraFrontalHorario()
