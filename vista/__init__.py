@@ -67,5 +67,10 @@ if __name__ == '__main__':
     cubo.realizarMovimientoLista(listaMovimientos)
     ejecutarAEstrella(cubo)
 
+    cubos=CuboRubik.generarCubosMezclados(3,5)
+    for i in range(len(cubos)):
+        cubos[i].print()
+        print("")
+
 
 

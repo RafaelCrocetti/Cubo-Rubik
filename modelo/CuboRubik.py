@@ -1,5 +1,5 @@
 import random as rnd
-
+import numpy as np
 from modelo.Manhattan import Manhattan
 from modelo.SubCubo import SubCubo
 
@@ -14,8 +14,6 @@ class CuboRubik:
         # se inicializa llenando la matriz de ceros
         self.SubCubos = [[[0 for i in range(3)] for j in range(3)] for k in range(3)]
 
-        # conjunto de movientos validos del cubo
-        self.movimientosValidos = ["F", "F'", "F2", "B", "B'", "B2", "U", "U'", "U2", "D", "D'", "D2", "L", "L'", "L2", "R", "R'", "R2"]
         id=0
         for k in range(3):
             for j in range(3):
@@ -40,7 +38,7 @@ class CuboRubik:
                     # 3: Rojo
                     # 4: Blanco
                     # 5: Naranja
-                    # 6: Azol
+                    # 6: Azul
                     # 7: Sin Color
                     if id == 0:
                         orientacionActual=[2, 5, 6]
@@ -160,6 +158,10 @@ class CuboRubik:
                     id=id+1
 
 
+    # conjunto de movientos validos del cubo
+    @staticmethod
+    def movimientosValidos():
+        return ["F", "F'", "F2", "B", "B'", "B2", "U", "U'", "U2", "D", "D'", "D2", "L", "L'", "L2", "R", "R'", "R2"];
     # muestra  en plantalla el cubo desarrollado de acuerdo al siguiente orden
     # 1: posterior
     # 2: izquierda
@@ -542,14 +544,15 @@ class CuboRubik:
                 self.rotarCaraDerechaHorario()
 
     # genera una secuencia al azar de movimientos para mezclar el cubo
-    def generarSecuenciaMezclado(self, cantidadMovimientos):
+    @staticmethod
+    def generarSecuenciaMezclado(cantidadMovimientos):
 
         siguienteIndice = rnd.randint(0, 17)
-        siguienteMovimiento = self.movimientosValidos[siguienteIndice]
+        siguienteMovimiento = CuboRubik.movimientosValidos()[siguienteIndice]
         movimientos = siguienteMovimiento
         for i in range(cantidadMovimientos - 1):
             siguienteIndice = rnd.randint(0, 17)
-            siguienteMovimiento = self.movimientosValidos[siguienteIndice]
+            siguienteMovimiento = CuboRubik.movimientosValidos()[siguienteIndice]
             movimientos = movimientos + " " + siguienteMovimiento
         return movimientos
 
@@ -595,4 +598,13 @@ class CuboRubik:
                     if not self.SubCubos[i][j][k].esIgual(cubo.SubCubos[i][j][k]):
                         return False
         return  True
-
+    @staticmethod
+    def generarCubosMezclados(cantidadCubos,maximaCantidadMovimientos):
+        cubosMezclados=[]
+        cantidadMovimientos=np.random.normal(1.0, 0.005, cantidadCubos)
+        print(cantidadMovimientos)
+        for i in range(cantidadCubos):
+            cubo=CuboRubik()
+            cubo.realizarMovimiento(CuboRubik.generarSecuenciaMezclado(round(cantidadMovimientos[i]*maximaCantidadMovimientos)))
+            cubosMezclados.append(cubo)
+        return cubosMezclados
