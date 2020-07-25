@@ -608,3 +608,80 @@ class CuboRubik:
             cubo.realizarMovimiento(CuboRubik.generarSecuenciaMezclado(round(cantidadMovimientos[i]*maximaCantidadMovimientos)))
             cubosMezclados.append(cubo)
         return cubosMezclados
+    def toOneHot(self):
+
+        oneHotEncoding=[]
+        # cara 1
+        for k in range(3):
+            renglon = "       "
+            for i in range(3):
+                subCubo = self.SubCubos[i][2][k]
+                color = subCubo.obtenerColorPlano(1)
+                self.pushColor(oneHotEncoding,color)
+
+
+        for j in range(2, -1, -1):
+            renglon = ""
+            # cara 2
+            for k in range(3):
+                subCubo = self.SubCubos[0][j][k]
+                color = subCubo.obtenerColorPlano(2)
+                self.pushColor(oneHotEncoding,color)
+            for i in range(3):
+                subCubo = self.SubCubos[i][j][2]
+                color = subCubo.obtenerColorPlano(3)
+                self.pushColor(oneHotEncoding,color)
+            # cara 4
+            for k in range(2, -1, -1):
+                subCubo = self.SubCubos[2][j][k]
+                color = subCubo.obtenerColorPlano(4)
+                self.pushColor(oneHotEncoding,color)
+            # cara 5
+            for i in range(2, -1, -1):
+                subCubo = self.SubCubos[i][j][0]
+                color = subCubo.obtenerColorPlano(5)
+                self.pushColor(oneHotEncoding,color)
+
+        # cara 6
+        for k in range(2, -1, -1):
+            renglon = "       "
+            for i in range(3):
+                subCubo = self.SubCubos[i][0][k]
+                color = subCubo.obtenerColorPlano(6)
+                self.pushColor(oneHotEncoding,color)
+        return  oneHotEncoding
+    def pushColor(self,array,color):
+        if color==1:
+            array.append(1)
+            for i in range(5):
+                array.append(0)
+        elif color==2:
+            for i in range(1):
+                array.append(0)
+            array.append(1)
+            for i in range(4):
+                array.append(0)
+        elif color==3:
+            for i in range(2):
+                array.append(0)
+            array.append(1)
+            for i in range(3):
+                array.append(0)
+        elif color==4:
+            for i in range(3):
+                array.append(0)
+            array.append(1)
+            for i in range(2):
+                array.append(0)
+        elif color==5:
+            for i in range(4):
+                array.append(0)
+            array.append(1)
+            for i in range(1):
+                array.append(0)
+        else:
+            for i in range(5):
+                array.append(0)
+            array.append(1)
+
+

@@ -64,6 +64,7 @@ if __name__ == '__main__':
     listaMovimientos=invertirLista(solucionCubo.split(" "))
 
     cubo = CuboRubik()
+    print(sum(cubo.toOneHot()))
     cubo.realizarMovimientoLista(listaMovimientos)
     ejecutarAEstrella(cubo)
 
